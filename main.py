@@ -15,8 +15,24 @@ from lib.database_connection import SessionLocal
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+app = FastAPI() 
 
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "https://localhost:8000/patients", 
+    "https://localhost:3000/patients", 
+    "https://localhost:5432/patients",
+] 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+) 
 # Dependency
 def get_db():
     db = SessionLocal()
@@ -41,19 +57,5 @@ def get_patients(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
     return physicians 
 
 #CORS allowed origins
-origins = [
-    "http://localhost.tiangolo.com",
-    "https://localhost.tiangolo.com",
-    "http://localhost",
-    "http://localhost:8000", 
-    "http://localhost:3000", 
-    "http://localhost:5432",
-] 
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+
