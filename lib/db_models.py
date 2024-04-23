@@ -14,7 +14,8 @@ from .database_connection import Base
 
 class Physician(Base):
     __tablename__ = "physician"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True) 
+    # id = relationship('Employee', backref='physician')  
     specialty = Column(String)
     patients = relationship('Patient', backref='physician')
 

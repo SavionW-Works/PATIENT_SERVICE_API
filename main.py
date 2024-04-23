@@ -12,6 +12,9 @@ from lib import physician_crud
 from lib import response_models
 from lib.database_connection import SessionLocal
 
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
 
 # Dependency
@@ -35,4 +38,22 @@ def get_patients(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
 @app.get("/physician/", response_model=List[response_models.Physician])
 def get_patients(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     physicians = physician_crud.get_physicians(db, skip=skip, limit=limit)
-    return physicians
+    return physicians 
+
+#CORS allowed origins
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:8000", 
+    "http://localhost:3000", 
+    "http://localhost:5432",
+] 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
