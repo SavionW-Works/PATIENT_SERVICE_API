@@ -7,7 +7,8 @@ than the database models. It provides the data validation and conversion
 classes and instances.
 """
 import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel 
+
 
 # Note:
 # Pydantic models declare the types using :,
@@ -40,6 +41,24 @@ class Employee(BaseModel):
 class Physician(Employee):
     id: int
     specialty: str
+
+    class Config:
+        orm_mode = True 
+
+#Custom model
+class Appointment(BaseModel): 
+    id: int
+    patient_id: int 
+    physician_id: int  
+    appointment_date: datetime.date
+    description: str 
+
+    class Config:
+        orm_mode = True
+
+class Nurse(Employee):
+    id: int
+    qualification: str
 
     class Config:
         orm_mode = True
